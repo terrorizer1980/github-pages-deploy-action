@@ -162,7 +162,7 @@ export async function deploy(action: ActionInterface): Promise<Status> {
         true // This output is always silenced due to the large output it creates.
       ))
 
-    console.log('--DEBUG--', 'hasFilesToCommit:', hasFilesToCommit)
+    console.log('--DEBUG--', 'hasFilesToCommit:', Boolean(hasFilesToCommit)
 
     if (
       (!action.singleCommit && !hasFilesToCommit) ||
