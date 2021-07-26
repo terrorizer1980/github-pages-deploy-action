@@ -155,14 +155,14 @@ export async function deploy(action: ActionInterface): Promise<Status> {
     info(`Checking if there are files to commit…`)
 
     const hasFilesToCommit =
-      action.isTest & TestFlag.HAS_CHANGED_FILES ||
+      action.isTest && TestFlag.HAS_CHANGED_FILES ||
       (await execute(
         checkGitStatus,
         `${action.workspace}/${temporaryDeploymentDirectory}`,
         true // This output is always silenced due to the large output it creates.
       ))
 
-    console.log('--DEBUG--', 'hasFilesToCommit:', Boolean(hasFilesToCommit)
+    console.log('--DEBUG--', 'hasFilesToCommit:', Boolean(hasFilesToCommit))
 
     if (
       (!action.singleCommit && !hasFilesToCommit) ||
