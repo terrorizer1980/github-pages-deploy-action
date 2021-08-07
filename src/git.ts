@@ -1,10 +1,11 @@
-import {info} from '@actions/core'
-import {mkdirP, rmRF} from '@actions/io'
-import fs from 'fs'
 import {ActionInterface, Status, TestFlag} from './constants'
-import {execute} from './execute'
-import {generateWorktree} from './worktree'
 import {isNullOrUndefined, suppressSensitiveInformation} from './util'
+import {mkdirP, rmRF} from '@actions/io'
+
+import {execute} from './execute'
+import fs from 'fs'
+import {generateWorktree} from './worktree'
+import {info} from '@actions/core'
 
 /* Initializes git in the workspace. */
 export async function init(action: ActionInterface): Promise<void | Error> {
@@ -142,6 +143,15 @@ export async function deploy(action: ActionInterface): Promise<Status> {
       action.workspace,
       action.silent
     )
+
+    if (action.singleCommit) {
+      info(`--DEBUG: Running git add --all .`)
+      await execute(
+        `git add --all .`,
+        `${action.workspace}/${temporaryDeploymentDirectory}`,
+        action.silent
+      )
+    }
 
     // Use git status to check if we have something to commit.
     // Special case is singleCommit with existing history, when
